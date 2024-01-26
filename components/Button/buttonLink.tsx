@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { VariantProps, cva } from "class-variance-authority";
-import { GestureResponderEvent, Text, TouchableOpacity } from "react-native";
 import cn from "../../utils/cn";
+import { Link } from "expo-router";
+import { GestureResponderEvent, Text, TouchableOpacity } from "react-native";
 
 interface ButtonProps
   extends VariantProps<typeof buttonVariants>,
@@ -10,9 +11,10 @@ interface ButtonProps
   textClassName?: string;
   children: string | ReactNode;
   onPress?: (event: GestureResponderEvent) => void;
+  href?: any;
 }
 
-export default function Button({
+export default function ButtonLink({
   children,
   className,
   textClassName,
@@ -23,24 +25,27 @@ export default function Button({
   textSize,
   justify,
   onPress,
+  href = "/uknow",
   ...props
 }: ButtonProps) {
   return (
-    <TouchableOpacity
-      className={cn(
-        buttonVariants({ variant, size, pill, justify, className })
-      )}
-      onPress={onPress}
-      {...props}
-    >
-      <Text
+    <Link href={href} asChild>
+      <TouchableOpacity
         className={cn(
-          textVariants({ textStyle, textSize, className: textClassName })
+          buttonVariants({ variant, size, pill, justify, className })
         )}
+        onPress={onPress}
+        {...props}
       >
-        {children}
-      </Text>
-    </TouchableOpacity>
+        <Text
+          className={cn(
+            textVariants({ textStyle, textSize, className: textClassName })
+          )}
+        >
+          {children}
+        </Text>
+      </TouchableOpacity>
+    </Link>
   );
 }
 
